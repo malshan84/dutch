@@ -147,25 +147,25 @@
         }
         @media (max-width: 600px) {
             button {
-        padding: 8px 12px;
-        font-size: 14px;
-        width: auto;
-        margin: 5px 2px;
-    }
-    li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    #itemList button {
-        padding: 6px 10px;  /* 버튼 크기 줄이기 */
-        font-size: 12px;   /* 폰트 크기 줄이기 */
-        margin: 2px 0;
-        width: auto;      /* 버튼 너비 자동 조정 */
-    }
-    #itemList div {
-        display: flex;
-        gap: 10px; /* 버튼 사이에 간격 추가 */
-    }
+                padding: 8px 12px;
+                font-size: 14px;
+                width: auto;
+                margin: 5px 2px;
+            }
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #itemList button {
+                padding: 6px 10px;  /* 버튼 크기 줄이기 */
+                font-size: 12px;   /* 폰트 크기 줄이기 */
+                margin: 2px 0;
+                width: auto;      /* 버튼 너비 자동 조정 */
+            }
+            #itemList div {
+                display: flex;
+                gap: 10px; /* 버튼 사이에 간격 추가 */
+            }
         }
         .autocomplete-items {
             position: absolute;
@@ -287,12 +287,11 @@
 
         function addItem() {
             const name = document.getElementById('itemName').value.trim();
-            const price = Math.round(Number(document.getElementById('itemPrice').value));
-            const newPeople = document.getElementById('itemPeople').value.split(',').map(person => person.trim()).filter(person => person);
-
-            newPeople.forEach(person => people.add(person));
-            updateAutocomplete();
-            if (name && price > 0 && newPeople.length > 0) {
+const price = Math.round(Number(document.getElementById('itemPrice').value));
+const newPeople = document.getElementById('itemPeople').value.split(',').map(person => person.trim()).filter(person => person);
+newPeople.forEach(person => people.add(person));
+        updateAutocomplete();
+        if (name && price > 0 && newPeople.length > 0) {
             items.push({ name, price, people: newPeople });
             newPeople.forEach(person => people.add(person));
             displayItems();
@@ -310,7 +309,7 @@
         currentEditIndex = index;
         document.getElementById('updateButton').style.display = 'inline';
     }
-    
+
     function updateItem() {
         const name = document.getElementById('itemName').value.trim();
         const price = Math.round(Number(document.getElementById('itemPrice').value));
@@ -383,7 +382,7 @@
     function displayResults(shares, personItems) {
         const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
         resultTable.innerHTML = '';
-        
+
         const sortedShares = Object.entries(shares).sort((a, b) => b[1] - a[1]);
 
         for (const [person, totalAmount] of sortedShares) {
@@ -399,17 +398,23 @@
 
     function copyResults() {
         const totalSum = document.getElementById('totalSum').textContent;
-        let resultText = `전체 합계: ${totalSum}원\n\n`;
+        let resultText = `전체 합계: ${totalSum}\n`;
+        for (const item of items) {
+            resultText += `[ ${item.name} ]: ${item.price} - ${item.people.join(', ')}\n`;
+        }
+        resultText += '\n';
         const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
         const rows = resultTable.getElementsByTagName('tr');
 
         for (const row of rows) {
             const cells = row.getElementsByTagName('td');
             const name = cells[0].textContent;
-            const shareDetails = cells[1].textContent;
+            const shareDetails = cells[1].textContent.split(', ').map(detail => `${detail}`).join('\n');
             const totalAmount = cells[2].textContent;
-            resultText += `${name}\n - 각 항목별 부담 금액: ${shareDetails}\n - 총 부담 금액: ${totalAmount}원\n\n`;
+            resultText += `${name}\n${shareDetails}\n합계: ${totalAmount}\n\n`;
         }
+
+        resultText += `Made by: https://dutch.siwan.dev`;
 
         navigator.clipboard.writeText(resultText).then(() => {
             alert('결과가 클립보드에 복사되었습니다.');
