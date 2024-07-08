@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N빵 계산기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            word-break: break-word;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #itemList button {
+            padding: 4px 8px;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 10px 16px;
+                font-size: 16px;
+                width: auto;
+                margin: 5px 2px;
+            }
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .input-wrapper i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 10px 30px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        @media (max-width: 600px) {
+            .input-wrapper input, button {
+                width: 100%;
+                margin-left: 0;
+            }
+            button {
+                margin-top: 10px;
+            }
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+        .autocomplete-active {
+            background-color: DodgerBlue !important;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>N빵 계산기</h1>
+        <div>
+            <div class="input-group">
+                <label for="itemName">
+                    항목 이름 
+                    <span class="tooltip">?
+                        <span class="tooltiptext">계산할 항목의 이름을 입력하세요 (예: 식사, 영화 등)</span>
+                    </span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-tag"></i>
+                    <input type="text" id="itemName" placeholder="예: 저녁 식사">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="itemPrice">
+                    가격 
+                    <span class="tooltip">?
+                        <span class="tooltiptext">항목의 총 가격을 입력하세요</span>
+                    </span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-won-sign"></i>
+                    <input type="number" id="itemPrice" min="0" step="1" placeholder="예: 50000">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="itemPeople">
+                    부담할 사람 
+                    <span class="tooltip">?
+                        <span class="tooltiptext">비용을 나눌 사람들의 이름을 쉼표로 구분하여 입력하세요</span>
+                    </span>
+                </label>
+                <div class="input-wrapper autocomplete">
+                    <i class="fas fa-users"></i>
+                    <input type="text" id="itemPeople" placeholder="예: 홍길동, 김철수, 이영희">
+                </div>
+            </div>
+            <button type="button" id="addItemButton">항목 추가</button>
+            <button type="button" onclick="updateItem()" id="updateButton" style="display:none;">항목 수정</button>
+        </div>
+        <div>
+            <h2>항목 목록</h2>
+            <ul id="itemList"></ul>
+        </div>
+        <div>
+            <button type="button" onclick="calculateShares()">계산하기</button>
+        </div>
+        <div>
+            <h2>결과</h2>
+            <div>
+                <strong>전체 합계: </strong><span id="totalSum">0</span>원
+            </div>
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>각 항목별 부담 금액 (원)</th>
+                        <th>총 부담 금액 (원)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button type="button" onclick="copyResults()">결과 복사</button>
+        </div>
+    </div>
+
+    <script>
+        const items = [];
+        let currentEditIndex = -1;
+        let people = new Set();
+
+        window.onload = function() {
+            document.getElementById('itemName').focus();
+            autocomplete(document.getElementById("itemPeople"), Array.from(people));
+        };
+
+        function updateAutocomplete() {
+autocomplete(document.getElementById('itemPeople'), Array.from(people));
+}
+document.getElementById('itemPeople').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            if (currentEditIndex === -1) {
+                addItem();
+            } else {
+                updateItem();
+            }
+        }
+    });
+
+    function addItem() {
+        const name = document.getElementById('itemName').value.trim();
+        const price = Math.round(Number(document.getElementById('itemPrice').value));
+        const newPeople = document.getElementById('itemPeople').value.split(',').map(person => person.trim()).filter(person => person);
+
+        newPeople.forEach(person => people.add(person));
+        updateAutocomplete();
+
+        if (name && price > 0 && newPeople.length > 0) {
+            items.push({ name, price, people: newPeople });
+            newPeople.forEach(person => people.add(person));
+            displayItems();
+            clearInputs();
+        } else {
+            alert('모든 필드를 올바르게 입력하세요. 가격은 0보다 커야 합니다.');
+        }
+    }
+
+    function editItem(index) {
+        const item = items[index];
+        document.getElementById('itemName').value = item.name;
+        document.getElementById('itemPrice').value = item.price;
+        document.getElementById('itemPeople').value = item.people.join(', ');
+        currentEditIndex = index;
+        document.getElementById('updateButton').style.display = inline;
+    }
+    
+    function updateItem() {
+    const name = document.getElementById('itemName').value.trim();
+    const price = Math.round(Number(document.getElementById('itemPrice').value));
+    const people = document.getElementById('itemPeople').value.split(',').map(person => person.trim()).filter(person => person);
+
+    if (name && price > 0 && people.length > 0 && currentEditIndex > -1) {
+        items[currentEditIndex] = { name, price, people };
+        displayItems();
+        clearInputs();
+        document.getElementById('updateButton').style.display = 'none';
+        currentEditIndex = -1;
+    } else {
+        alert('모든 필드를 올바르게 입력하세요. 가격은 0보다 커야 합니다.');
+    }
+}
+
+function deleteItem(index) {
+    items.splice(index, 1);
+    displayItems();
+}
+
+function displayItems() {
+    const itemList = document.getElementById('itemList');
+    itemList.innerHTML = '';
+    items.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item.name} - ${item.price}원 - ${item.people.join(', ')}`;
+        const editButton = document.createElement('button');
+        editButton.textContent = '수정';
+        editButton.onclick = () => editItem(index);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '삭제';
+        deleteButton.onclick = () => deleteItem(index);
+        listItem.appendChild(editButton);
+        listItem.appendChild(deleteButton);
+        itemList.appendChild(listItem);
+    });
+}
+
+function clearInputs() {
+    document.getElementById('itemName').value = '';
+    document.getElementById('itemPrice').value = '';
+    document.getElementById('itemPeople').value = '';
+    document.getElementById('itemName').focus();
+}
+
+function calculateShares() {
+    const totalShares = {};
+    const personItems = {};
+    let totalSum = 0;
+
+    items.forEach(item => {
+        totalSum += item.price;
+        const sharePerPerson = item.price / item.people.length;
+        item.people.forEach(person => {
+            totalShares[person] = (totalShares[person] || 0) + sharePerPerson;
+            if (!personItems[person]) {
+                personItems[person] = [];
+            }
+            personItems[person].push({ name: item.name, amount: Math.round(sharePerPerson) });
+        });
+    });
+
+    document.getElementById('totalSum').textContent = totalSum;
+    displayResults(totalShares, personItems);
+}
+
+function displayResults(shares, personItems) {
+    const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+    resultTable.innerHTML = '';
+    
+    const sortedShares = Object.entries(shares).sort((a, b) => b[1] - a[1]);
+
+    for (const [person, totalAmount] of sortedShares) {
+        const row = resultTable.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        cell1.textContent = person;
+        cell2.textContent = personItems[person].map(item => `${item.name}: ${item.amount}원`).join(', ');
+        cell3.textContent = Math.round(totalAmount);
+    }
+}
+
+function copyResults() {
+    const totalSum = document.getElementById('totalSum').textContent;
+    let resultText = `전체 합계: ${totalSum}원\n\n`;
+    const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+    const rows = resultTable.getElementsByTagName('tr');
+
+    for (const row of rows) {
+        const cells = row.getElementsByTagName('td');
+        const name = cells[0].textContent;
+        const shareDetails = cells[1].textContent;
+        const totalAmount = cells[2].textContent;
+        resultText += `${name}\n - 각 항목별 부담 금액: ${shareDetails}\n - 총 부담 금액: ${totalAmount}원\n\n`;
+    }
+
+    navigator.clipboard.writeText(resultText).then(() => {
+        alert('결과가 클립보드에 복사되었습니다.');
+    }).catch(err => {
+        alert('결과 복사에 실패했습니다. 다시 시도해주세요.');
+        console.error('Clipboard copy failed:', err);
+    });
+}
+
+function autocomplete(inp, arr) {
+    var currentFocus;
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        closeAllLists();
+        if (!val) { return false; }
+        currentFocus = -1;
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        this.parentNode.appendChild(a);
+        var terms = val.split(',').map(term => term.trim());
+        var lastTerm = terms.pop();
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].substr(0, lastTerm.length).toUpperCase() == lastTerm.toUpperCase()) {
+                b = document.createElement("DIV");
+                b.innerHTML = "<strong>" + arr[i].substr(0, lastTerm.length) + "</strong>";
+                b.innerHTML += arr[i].substr(lastTerm.length);
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.addEventListener("click", function(e) {
+                    terms.push(this.getElementsByTagName("input")[0].value);
+                    inp.value = terms.join(', ') + ', ';
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+        }
+    });
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+        } else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            e.preventDefault();
+            if (currentFocus > -1) {
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+}
+
+// Event listener for the add button
+document.getElementById('addItemButton').addEventListener('click', addItem);
+</script>
+</body>
+</html>
