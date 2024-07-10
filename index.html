@@ -21,6 +21,9 @@
             color: #333;
             text-align: center;
         }
+        h2 {
+            text-align: center;
+        }
         .container {
             background-color: #fff;
             padding: 20px;
@@ -193,6 +196,18 @@
             background-color: DodgerBlue !important;
             color: #ffffff;
         }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+            color: #555;
+            /* 아이콘 색상 */
+        }
+        .tooltip i {
+            font-size: 16px;
+            /* 아이콘 크기 조정 */
+        }
     </style>
 </head>
 <body>
@@ -202,8 +217,9 @@
             <div class="input-group">
                 <label for="itemName">
                     항목 이름 
-                    <span class="tooltip">?
+                    <span class="tooltip">
                         <span class="tooltiptext">계산할 항목의 이름을 입력하세요 (예: 식사, 영화 등)</span>
+                        <i class="far fa-question-circle"></i>
                     </span>
                 </label>
                 <div class="input-wrapper">
@@ -214,8 +230,9 @@
             <div class="input-group">
                 <label for="itemPrice">
                     가격 
-                    <span class="tooltip">?
+                    <span class="tooltip">
                         <span class="tooltiptext">항목의 총 가격을 입력하세요</span>
+                        <i class="far fa-question-circle"></i>
                     </span>
                 </label>
                 <div class="input-wrapper">
@@ -226,8 +243,9 @@
             <div class="input-group">
                 <label for="itemPeople">
                     부담할 사람 
-                    <span class="tooltip">?
+                    <span class="tooltip">
                         <span class="tooltiptext">비용을 나눌 사람들의 이름을 쉼표로 구분하여 입력하세요</span>
+                        <i class="far fa-question-circle"></i>
                     </span>
                 </label>
                 <div class="input-wrapper autocomplete">
