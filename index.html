@@ -2,11 +2,31 @@
 <html lang="ko">
 
 <head>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "N빵 계산기 - 더치페이와 비용 정산",
+          "description": "N빵 계산기로 더치페이와 비용 정산을 쉽고 정확하게. 식사, 여행, 동아리 활동 등 다양한 상황에서 공정한 비용 분배를 도와드립니다.",
+          "url": "https://dutch.siwan.dev",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Web"
+        }
+    </script>
+    
+    <meta property="og:title" content="N빵 계산기 - 더치페이와 비용 정산을 쉽고 정확하게">
+    <meta property="og:description"
+        content="N빵 계산기로 더치페이와 비용 정산을 쉽고 정확하게. 식사, 여행, 동아리 활동 등 다양한 상황에서 공정한 비용 분배를 도와드립니다.">
+    <meta property="og:image" content="https://dutch.siwan.dev/og-image.jpg">
+    <meta property="og:url" content="https://dutch.siwan.dev">
+    <meta property="og:type" content="website">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="N빵 계산기, 더치 페이 계산기, 비용 정산을 위한 웹 페이지">
-    <meta name="keywords" content="N빵, 더치, 더치페이, 더치 페이, 비용정산, 비용 정산, n빵, 총무, 회계, 분배, 계산기, N빵 계산기, n빵 계산기, 더치페이 계산기, 더치 페이 계산기, 회식, 회식 정산">
-    <title>N빵 계산기 - 더치페이 계산기</title>
+    <meta name="description" content="N빵 계산기로 더치페이와 비용 정산을 쉽고 정확하게. 식사, 여행, 동아리 활동 등 다양한 상황에서 공정한 비용 분배를 도와드립니다.">
+    <meta name="keywords"
+        content="N빵, 더치, 더치페이, 더치 페이, 비용정산, 비용 정산, n빵, 총무, 회계, 분배, 계산기, N빵 계산기, n빵 계산기, 더치페이 계산기, 더치 페이 계산기, 회식, 회식 정산">
+    <title>N빵 계산기 - 더치페이와 비용 정산을 쉽고 정확하게</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="favicon.png" type="image/png">
     <style>
@@ -245,6 +265,84 @@
         #resultContainer {
             display: none;
         }
+
+
+
+
+
+
+
+        .usage-instructions {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .usage-instructions h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        .instruction-section {
+            margin-top: 20px;
+        }
+
+        .instruction-section h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .sub-section {
+            background-color: #ffffff;
+            border-left: 4px solid #4CAF50;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+
+        .sub-section h4 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .usage-instructions ol {
+            padding-left: 20px;
+            list-style-type: decimal;
+            /* 명시적으로 숫자 스타일 지정 */
+        }
+
+        .usage-instructions li {
+            margin-bottom: 10px;
+        }
+
+        .usage-instructions .main-list {
+            counter-reset: item;
+        }
+
+        .usage-instructions .main-list li {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .usage-instructions .main-list li:before {
+            content: counter(item) ". ";
+            counter-increment: item;
+            font-weight: bold;
+            display: inline-block;
+            width: 1.5em;
+            margin-left: -1.5em;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 20px;
+            color: #856404;
+        }
     </style>
 </head>
 
@@ -320,6 +418,67 @@
             <button type="button" onclick="copyResults()">결과 복사</button>
         </div>
     </div>
+
+
+
+
+    <div class="usage-instructions">
+        <h2>N빵 계산기 사용 방법</h2>
+        <p>N빵 계산기를 사용하여 더치페이와 비용 정산을 쉽고 정확하게 할 수 있습니다. 다음은 단계별 사용 방법입니다:</p>
+
+        <div class="instruction-section">
+            <h3>기본 사용법</h3>
+            <ol class="main-list">
+                <li><strong>항목 입력:</strong> '항목 이름'에 계산할 항목(예: 식사, 영화 등)을 입력합니다.</li>
+                <li><strong>가격 입력:</strong> '가격'에 해당 항목의 총 비용을 입력합니다.</li>
+                <li><strong>인원 입력:</strong> '부담할 사람'에 비용을 나눌 사람들의 이름을 쉼표로 구분하여 입력합니다.</li>
+                <li><strong>항목 추가:</strong> '항목 추가' 버튼을 클릭하여 입력한 항목을 목록에 추가합니다.</li>
+                <li><strong>추가 항목:</strong> 필요한 만큼 2-4단계를 반복하여 모든 항목을 추가합니다.</li>
+                <li><strong>계산:</strong> 모든 항목을 입력한 후 '계산하기' 버튼을 클릭합니다.</li>
+                <li><strong>결과 확인:</strong> 각 개인별로 부담해야 할 금액을 확인합니다.</li>
+                <li><strong>결과 공유:</strong> '결과 복사' 버튼을 클릭하여 계산 결과를 클립보드에 복사하고 필요한 곳에 붙여넣어 공유합니다.</li>
+            </ol>
+        </div>
+
+        <div class="instruction-section">
+            <h3>항목 관리하기</h3>
+            <p>N빵 계산기에서는 항목을 쉽게 추가, 수정, 삭제할 수 있습니다. 다음은 각 작업의 상세한 방법입니다:</p>
+
+            <div class="sub-section">
+                <h4>항목 추가하기</h4>
+                <ol>
+                    <li>항목 이름, 가격, 부담할 사람을 입력합니다.</li>
+                    <li>'항목 추가' 버튼을 클릭합니다.</li>
+                    <li>추가된 항목이 목록에 나타납니다.</li>
+                </ol>
+            </div>
+
+            <div class="sub-section">
+                <h4>항목 수정하기</h4>
+                <ol>
+                    <li>수정하고 싶은 항목 옆의 '수정' 버튼을 클릭합니다.</li>
+                    <li>항목 정보가 입력 필드에 자동으로 채워집니다.</li>
+                    <li>원하는 정보를 수정합니다.</li>
+                    <li>'항목 수정' 버튼을 클릭하여 변경사항을 저장합니다.</li>
+                </ol>
+            </div>
+
+            <div class="sub-section">
+                <h4>항목 삭제하기</h4>
+                <ol>
+                    <li>삭제하고 싶은 항목 옆의 '삭제' 버튼을 클릭합니다.</li>
+                    <li>항목이 즉시 목록에서 제거됩니다.</li>
+                </ol>
+            </div>
+
+            <p class="warning"><strong>주의:</strong> 항목을 삭제하면 복구할 수 없으니 신중히 선택하세요.</p>
+        </div>
+    </div>
+
+
+
+
+
     <script>
         const items = [];
         let currentEditIndex = -1;
